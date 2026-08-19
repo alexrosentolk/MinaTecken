@@ -1,536 +1,817 @@
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0">
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
 
-<header>
-  <div class="logo">
-    <span class="material-symbols-rounded">sign_language</span>
-    <h1>MinaTecken</h1>
-  </div>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-  <div id="userArea" class="user-area"></div>
-</header>
+  <meta
+    name="description"
+    content="MinaTecken – lär dig svenska tecken genom ordlista och förhör."
+  >
 
-<nav id="nav" style="display:none;">
-  <button class="nav-btn" data-page="home">
-    <span class="material-symbols-rounded">home</span>
-    Start
-  </button>
+  <title>MinaTecken</title>
 
-  <button class="nav-btn" data-page="add">
-    <span class="material-symbols-rounded">add</span>
-    Lägg till ord
-  </button>
+  <!-- Google Material Symbols -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0"
+  >
 
-  <button class="nav-btn" data-page="dictionary">
-    <span class="material-symbols-rounded">menu_book</span>
-    Ordlista
-  </button>
+  <!-- Din CSS -->
+  <link
+    rel="stylesheet"
+    href="./style.css"
+  >
+</head>
 
-  <button class="nav-btn" data-page="quiz">
-    <span class="material-symbols-rounded">school</span>
-    Förhör
-  </button>
-</nav>
+<body>
 
-<main id="app"></main>
+  <!-- =========================
+       HEADER
+  ========================== -->
 
+  <header>
 
-<!-- LOGIN -->
+    <div class="logo">
 
-<template id="loginTemplate">
-  <section class="page-card login-page">
+      <span class="material-symbols-rounded">
+        sign_language
+      </span>
 
-    <div class="page-title">
-      <span class="material-symbols-rounded">person</span>
-      <h2>Logga in</h2>
-    </div>
-
-    <p class="login-info">
-      Skriv ditt för- och efternamn utan mellanslag.
-    </p>
-
-    <form id="loginForm">
-
-      <label for="username">
-        För- och efternamn
-      </label>
-
-      <input
-        id="username"
-        type="text"
-        placeholder="Exempel: AdamPersson"
-        autocomplete="off"
-        required
-      >
-
-      <div id="loginError" class="quiz-error"></div>
-
-      <button class="save-btn" type="submit">
-        <span class="material-symbols-rounded">login</span>
-        Logga in
-      </button>
-
-    </form>
-
-  </section>
-</template>
-
-
-<!-- HOME -->
-
-<template id="homeTemplate">
-
-  <section class="home-page">
-
-    <h2>Välkommen till MinaTecken</h2>
-
-    <p id="welcomeUser" class="welcome-user"></p>
-
-    <div class="home-buttons">
-
-      <button class="home-btn" data-page="add">
-        <span class="material-symbols-rounded">add</span>
-        Lägg till ord
-      </button>
-
-      <button class="home-btn" data-page="dictionary">
-        <span class="material-symbols-rounded">menu_book</span>
-        Ordlista
-      </button>
-
-      <button class="home-btn" data-page="quiz">
-        <span class="material-symbols-rounded">school</span>
-        Förhör
-      </button>
+      <h1>MinaTecken</h1>
 
     </div>
 
-  </section>
+    <div
+      id="userArea"
+      class="user-area"
+    ></div>
 
-</template>
+  </header>
 
 
-<!-- ADD / EDIT -->
+  <!-- =========================
+       NAVIGATION
+  ========================== -->
 
-<template id="addTemplate">
+  <nav
+    id="nav"
+    style="display:none;"
+  >
 
-  <section class="page-card">
+    <button
+      class="nav-btn"
+      data-page="home"
+      type="button"
+    >
 
-    <div class="page-title">
+      <span class="material-symbols-rounded">
+        home
+      </span>
 
-      <span id="formTitleIcon" class="material-symbols-rounded">
+      Start
+
+    </button>
+
+
+    <button
+      class="nav-btn"
+      data-page="add"
+      type="button"
+    >
+
+      <span class="material-symbols-rounded">
         add
       </span>
 
-      <h2 id="formTitle">
-        Lägg till ord
-      </h2>
+      Lägg till ord
 
-    </div>
-
-    <form id="signForm">
-
-      <label for="word">
-        Svenskt ord
-      </label>
-
-      <input
-        id="word"
-        required
-        autocomplete="off"
-      >
-
-      <label for="video">
-        Videolänk
-      </label>
-
-      <input
-        id="video"
-        type="url"
-        placeholder="https://..."
-      >
-
-      <label for="week">
-        Vecka
-      </label>
-
-      <input
-        id="week"
-        type="number"
-      >
-
-      <label for="year">
-        År
-      </label>
-
-      <input
-        id="year"
-        type="number"
-      >
-
-      <label for="folder">
-        Mapp
-      </label>
-
-      <select id="folder"></select>
-
-      <div id="newFolderBox" class="new-folder-box">
-
-        <label for="newFolder">
-          Ny mapp
-        </label>
-
-        <input
-          id="newFolder"
-          type="text"
-          placeholder="Skriv namnet på den nya mappen"
-          autocomplete="off"
-        >
-
-      </div>
-
-      <div class="form-buttons">
-
-        <button
-          id="cancelEditButton"
-          type="button"
-          class="quiz-secondary-btn"
-          style="display:none;"
-        >
-          Avbryt
-        </button>
-
-        <button class="save-btn" type="submit">
-
-          <span
-            id="formButtonIcon"
-            class="material-symbols-rounded"
-          >
-            save
-          </span>
-
-          <span id="formButtonText">
-            Spara ord
-          </span>
-
-        </button>
-
-      </div>
-
-    </form>
-
-  </section>
-
-</template>
+    </button>
 
 
-<!-- DICTIONARY -->
-
-<template id="dictionaryTemplate">
-
-  <section class="page-card">
-
-    <div class="dictionary-header">
-
-      <div class="page-title">
-
-        <span class="material-symbols-rounded">
-          menu_book
-        </span>
-
-        <h2>Ordlista</h2>
-
-      </div>
-
-      <button
-        id="editModeButton"
-        class="edit-mode-button"
-      >
-        <span class="material-symbols-rounded">
-          edit
-        </span>
-
-        Redigeringsläge
-      </button>
-
-    </div>
-
-
-    <div class="filters">
-
-      <select id="sortSelect">
-
-        <option value="az">
-          A-Ö
-        </option>
-
-        <option value="old">
-          Äldst-nyast
-        </option>
-
-        <option value="new">
-          Nyast-äldst
-        </option>
-
-      </select>
-
-
-      <select id="weekSelect">
-
-        <option value="all">
-          Alla veckor
-        </option>
-
-      </select>
-
-
-      <select id="folderSelect">
-
-        <option value="all">
-          Alla mappar
-        </option>
-
-      </select>
-
-    </div>
-
-
-    <div
-      id="signList"
-      class="sign-list"
+    <button
+      class="nav-btn"
+      data-page="dictionary"
+      type="button"
     >
-      Laddar...
-    </div>
 
-  </section>
+      <span class="material-symbols-rounded">
+        menu_book
+      </span>
 
-</template>
+      Ordlista
+
+    </button>
 
 
-<!-- QUIZ -->
-
-<template id="quizTemplate">
-
-  <section class="page-card quiz-page">
-
-    <div class="page-title">
+    <button
+      class="nav-btn"
+      data-page="quiz"
+      type="button"
+    >
 
       <span class="material-symbols-rounded">
         school
       </span>
 
-      <h2>Förhör</h2>
+      Förhör
+
+    </button>
+
+  </nav>
+
+
+  <!-- =========================
+       APP
+  ========================== -->
+
+  <main id="app"></main>
+
+
+  <!-- =========================
+       LOGIN
+  ========================== -->
+
+  <template id="loginTemplate">
+
+    <section class="page-card login-page">
+
+      <div class="page-title">
+
+        <span class="material-symbols-rounded">
+          person
+        </span>
+
+        <h2>
+          Logga in
+        </h2>
+
+      </div>
+
+
+      <p class="login-info">
+        Skriv ditt för- och efternamn utan mellanslag.
+      </p>
+
+
+      <form id="loginForm">
+
+        <label for="username">
+          För- och efternamn
+        </label>
+
+
+        <input
+          id="username"
+          type="text"
+          placeholder="Exempel: AdamPersson"
+          autocomplete="off"
+          required
+        >
+
+
+        <div
+          id="loginError"
+          class="quiz-error"
+        ></div>
+
+
+        <button
+          class="save-btn"
+          type="submit"
+        >
+
+          <span class="material-symbols-rounded">
+            login
+          </span>
+
+          Logga in
+
+        </button>
+
+      </form>
+
+    </section>
+
+  </template>
+
+
+  <!-- =========================
+       HOME
+  ========================== -->
+
+  <template id="homeTemplate">
+
+    <section class="home-page">
+
+      <h2>
+        Välkommen till MinaTecken
+      </h2>
+
+
+      <p
+        id="welcomeUser"
+        class="welcome-user"
+      ></p>
+
+
+      <div class="home-buttons">
+
+        <button
+          class="home-btn"
+          data-page="add"
+          type="button"
+        >
+
+          <span class="material-symbols-rounded">
+            add
+          </span>
+
+          Lägg till ord
+
+        </button>
+
+
+        <button
+          class="home-btn"
+          data-page="dictionary"
+          type="button"
+        >
+
+          <span class="material-symbols-rounded">
+            menu_book
+          </span>
+
+          Ordlista
+
+        </button>
+
+
+        <button
+          class="home-btn"
+          data-page="quiz"
+          type="button"
+        >
+
+          <span class="material-symbols-rounded">
+            school
+          </span>
+
+          Förhör
+
+        </button>
+
+      </div>
+
+    </section>
+
+  </template>
+
+
+  <!-- =========================
+       ADD / EDIT
+  ========================== -->
+
+  <template id="addTemplate">
+
+    <section class="page-card">
+
+      <div class="page-title">
+
+        <span
+          id="formTitleIcon"
+          class="material-symbols-rounded"
+        >
+          add
+        </span>
+
+        <h2 id="formTitle">
+          Lägg till ord
+        </h2>
+
+      </div>
+
+
+      <form id="signForm">
+
+        <label for="word">
+          Svenskt ord
+        </label>
+
+        <input
+          id="word"
+          type="text"
+          required
+          autocomplete="off"
+        >
+
+
+        <label for="video">
+          Videolänk
+        </label>
+
+        <input
+          id="video"
+          type="url"
+          placeholder="https://..."
+          autocomplete="off"
+        >
+
+
+        <label for="week">
+          Vecka
+        </label>
+
+        <input
+          id="week"
+          type="number"
+          min="1"
+          max="53"
+        >
+
+
+        <label for="year">
+          År
+        </label>
+
+        <input
+          id="year"
+          type="number"
+          min="2000"
+          max="2100"
+        >
+
+
+        <label for="folder">
+          Mapp
+        </label>
+
+        <select id="folder">
+
+          <option value="">
+            Ingen mapp
+          </option>
+
+          <option value="__NEW__">
+            + Ny mapp
+          </option>
+
+        </select>
+
+
+        <!--
+          Detta fält ska endast visas
+          när användaren väljer "+ Ny mapp".
+        -->
+
+        <div
+          id="newFolderBox"
+          class="new-folder-box"
+          style="display:none;"
+        >
+
+          <label for="newFolder">
+            Ny mapp
+          </label>
+
+          <input
+            id="newFolder"
+            type="text"
+            placeholder="Skriv namnet på den nya mappen"
+            autocomplete="off"
+          >
+
+        </div>
+
+
+        <div class="form-buttons">
+
+          <button
+            id="cancelEditButton"
+            type="button"
+            class="quiz-secondary-btn"
+            style="display:none;"
+          >
+            Avbryt
+          </button>
+
+
+          <button
+            class="save-btn"
+            type="submit"
+          >
+
+            <span
+              id="formButtonIcon"
+              class="material-symbols-rounded"
+            >
+              save
+            </span>
+
+            <span id="formButtonText">
+              Spara ord
+            </span>
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+  </template>
+
+
+  <!-- =========================
+       DICTIONARY
+  ========================== -->
+
+  <template id="dictionaryTemplate">
+
+    <section class="page-card">
+
+      <div class="dictionary-header">
+
+        <div class="page-title">
+
+          <span class="material-symbols-rounded">
+            menu_book
+          </span>
+
+          <h2>
+            Ordlista
+          </h2>
+
+        </div>
+
+
+        <button
+          id="editModeButton"
+          class="edit-mode-button"
+          type="button"
+        >
+
+          <span class="material-symbols-rounded">
+            edit
+          </span>
+
+          Redigeringsläge
+
+        </button>
+
+      </div>
+
+
+      <div class="filters">
+
+        <select id="sortSelect">
+
+          <option value="az">
+            A-Ö
+          </option>
+
+          <option value="old">
+            Äldst-nyast
+          </option>
+
+          <option value="new">
+            Nyast-äldst
+          </option>
+
+        </select>
+
+
+        <select id="weekSelect">
+
+          <option value="all">
+            Alla veckor
+          </option>
+
+        </select>
+
+
+        <select id="folderSelect">
+
+          <option value="all">
+            Alla mappar
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div
+        id="signList"
+        class="sign-list"
+      >
+        Laddar...
+      </div>
+
+    </section>
+
+  </template>
+
+
+  <!-- =========================
+       QUIZ
+  ========================== -->
+
+  <template id="quizTemplate">
+
+    <section class="page-card quiz-page">
+
+      <div class="page-title">
+
+        <span class="material-symbols-rounded">
+          school
+        </span>
+
+        <h2>
+          Förhör
+        </h2>
+
+      </div>
+
+
+      <div id="quizContent">
+        Laddar tecken...
+      </div>
+
+    </section>
+
+  </template>
+
+
+  <!-- =========================
+       QUIZ SETUP
+  ========================== -->
+
+  <template id="quizSetupTemplate">
+
+    <div class="quiz-section">
+
+      <h3>
+        Vilka tecken vill du förhöras på?
+      </h3>
+
+
+      <div class="quiz-selection-grid">
+
+        <label class="quiz-option">
+
+          <input
+            type="radio"
+            name="quizSelection"
+            value="all"
+            checked
+          >
+
+          <span>
+            Alla tecken
+          </span>
+
+        </label>
+
+
+        <label class="quiz-option">
+
+          <input
+            type="radio"
+            name="quizSelection"
+            value="folder"
+          >
+
+          <span>
+            En viss kategori
+          </span>
+
+        </label>
+
+
+        <label class="quiz-option">
+
+          <input
+            type="radio"
+            name="quizSelection"
+            value="week"
+          >
+
+          <span>
+            En viss vecka
+          </span>
+
+        </label>
+
+
+        <label class="quiz-option">
+
+          <input
+            type="radio"
+            name="quizSelection"
+            value="manual"
+          >
+
+          <span>
+            Välj manuellt
+          </span>
+
+        </label>
+
+
+        <label class="quiz-option">
+
+          <input
+            type="radio"
+            name="quizSelection"
+            value="random"
+          >
+
+          <span>
+            Slumpmässigt valda tecken
+          </span>
+
+        </label>
+
+      </div>
+
+
+      <div
+        id="quizSelectionDetails"
+        class="quiz-selection-details"
+      ></div>
+
+
+      <button
+        id="startQuizButton"
+        class="quiz-main-btn"
+        type="button"
+      >
+
+        <span class="material-symbols-rounded">
+          play_arrow
+        </span>
+
+        Fortsätt
+
+      </button>
 
     </div>
 
-    <div id="quizContent">
-      Laddar tecken...
-    </div>
-
-  </section>
-
-</template>
+  </template>
 
 
-<!-- QUIZ SETUP -->
+  <!-- =========================
+       QUIZ TYPE
+  ========================== -->
 
-<template id="quizSetupTemplate">
+  <template id="quizTypeTemplate">
 
-  <div class="quiz-section">
+    <div class="quiz-section quiz-type-choice">
 
-    <h3>
-      Vilka tecken vill du förhöras på?
-    </h3>
+      <h3>
+        Hur vill du bli förhörd?
+      </h3>
 
-    <div class="quiz-selection-grid">
 
-      <label class="quiz-option">
-        <input
-          type="radio"
-          name="quizSelection"
-          value="all"
-          checked
+      <p class="quiz-info">
+        Välj vad som ska visas först.
+      </p>
+
+
+      <div class="quiz-type-buttons">
+
+        <button
+          class="quiz-type-btn"
+          id="showSignQuiz"
+          type="button"
         >
-        <span>Alla tecken</span>
-      </label>
 
-      <label class="quiz-option">
-        <input
-          type="radio"
-          name="quizSelection"
-          value="folder"
-        >
-        <span>En viss kategori</span>
-      </label>
+          <span class="material-symbols-rounded">
+            sign_language
+          </span>
 
-      <label class="quiz-option">
-        <input
-          type="radio"
-          name="quizSelection"
-          value="week"
-        >
-        <span>En viss vecka</span>
-      </label>
+          Se tecknet
 
-      <label class="quiz-option">
-        <input
-          type="radio"
-          name="quizSelection"
-          value="manual"
-        >
-        <span>Välj manuellt</span>
-      </label>
+        </button>
 
-      <label class="quiz-option">
-        <input
-          type="radio"
-          name="quizSelection"
-          value="random"
+
+        <button
+          class="quiz-type-btn"
+          id="showWordQuiz"
+          type="button"
         >
-        <span>Slumpmässigt valda tecken</span>
-      </label>
+
+          <span class="material-symbols-rounded">
+            translate
+          </span>
+
+          Se ordet/betydelsen
+
+        </button>
+
+      </div>
 
     </div>
 
-    <div
-      id="quizSelectionDetails"
-      class="quiz-selection-details"
-    ></div>
+  </template>
 
-    <button
-      id="startQuizButton"
-      class="quiz-main-btn"
-    >
+
+  <!-- =========================
+       SIGN ANSWER
+  ========================== -->
+
+  <template id="signAnswerTemplate">
+
+    <div class="quiz-section">
+
+      <h3>
+        Hur vill du svara?
+      </h3>
+
+
+      <div class="quiz-type-buttons">
+
+        <button
+          class="quiz-type-btn"
+          id="writeAnswerBtn"
+          type="button"
+        >
+
+          <span class="material-symbols-rounded">
+            edit
+          </span>
+
+          Skriv ditt svar
+
+        </button>
+
+
+        <button
+          class="quiz-type-btn"
+          id="multipleChoiceBtn"
+          type="button"
+        >
+
+          <span class="material-symbols-rounded">
+            list
+          </span>
+
+          Fyra alternativ
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </template>
+
+
+  <!-- =========================
+       QUIZ FINISHED
+  ========================== -->
+
+  <template id="quizFinishedTemplate">
+
+    <div class="quiz-finished">
+
       <span class="material-symbols-rounded">
-        play_arrow
+        emoji_events
       </span>
 
-      Fortsätt
-    </button>
 
-  </div>
-
-</template>
+      <h3>
+        Förhöret är klart!
+      </h3>
 
 
-<!-- QUIZ TYPE -->
-
-<template id="quizTypeTemplate">
-
-  <div class="quiz-section quiz-type-choice">
-
-    <h3>
-      Hur vill du bli förhörd?
-    </h3>
-
-    <p class="quiz-info">
-      Välj vad som ska visas först.
-    </p>
-
-    <div class="quiz-type-buttons">
-
-      <button
-        class="quiz-type-btn"
-        id="showSignQuiz"
-      >
-
-        <span class="material-symbols-rounded">
-          sign_language
-        </span>
-
-        Se tecknet
-
-      </button>
+      <p id="finishedText"></p>
 
 
       <button
-        class="quiz-type-btn"
-        id="showWordQuiz"
+        id="restartQuiz"
+        class="quiz-main-btn"
+        type="button"
       >
-
-        <span class="material-symbols-rounded">
-          translate
-        </span>
-
-        Se ordet/betydelsen
-
+        Nytt förhör
       </button>
 
     </div>
 
-  </div>
-
-</template>
+  </template>
 
 
-<!-- SIGN ANSWER -->
+  <!-- =========================
+       JAVASCRIPT
+  ========================== -->
 
-<template id="signAnswerTemplate">
+  <script src="./script.js"></script>
 
-  <div class="quiz-section">
-
-    <h3>
-      Hur vill du svara?
-    </h3>
-
-    <div class="quiz-type-buttons">
-
-      <button
-        class="quiz-type-btn"
-        id="writeAnswerBtn"
-      >
-
-        <span class="material-symbols-rounded">
-          edit
-        </span>
-
-        Skriv ditt svar
-
-      </button>
-
-
-      <button
-        class="quiz-type-btn"
-        id="multipleChoiceBtn"
-      >
-
-        <span class="material-symbols-rounded">
-          list
-        </span>
-
-        Fyra alternativ
-
-      </button>
-
-    </div>
-
-  </div>
-
-</template>
-
-
-<!-- QUIZ FINISHED -->
-
-<template id="quizFinishedTemplate">
-
-  <div class="quiz-finished">
-
-    <span class="material-symbols-rounded">
-      emoji_events
-    </span>
-
-    <h3>
-      Förhöret är klart!
-    </h3>
-
-    <p id="finishedText"></p>
-
-    <button
-      id="restartQuiz"
-      class="quiz-main-btn"
-    >
-      Nytt förhör
-    </button>
-
-  </div>
-
-</template>
+</body>
+</html>
