@@ -95,37 +95,23 @@ async function handleLogin(event){
   const input =
     document.getElementById("username");
 
-  const error =
+  const errorElement =
     document.getElementById("loginError");
 
   const username =
     input.value.trim();
 
-  /*
-    Tillåt exempelvis:
-
-    AdamPersson
-    AnnaKarlsson
-    Erik_Svensson
-
-    Men inte mellanslag eller konstiga tecken.
-  */
-
   if(!/^[A-Za-zÅÄÖåäöÉéÜü_-]{2,50}$/.test(username)){
 
-    error.textContent =
+    errorElement.textContent =
       "Skriv ditt för- och efternamn utan mellanslag, exempelvis AdamPersson.";
 
     return;
   }
 
-  error.textContent="";
+  errorElement.textContent="";
 
   try{
-
-    /*
-      Kontrollera att servern fungerar.
-    */
 
     const response =
       await fetch(
@@ -134,10 +120,6 @@ async function handleLogin(event){
 
     if(!response.ok)
       throw new Error();
-
-    /*
-      Spara användaren i webbläsaren.
-    */
 
     currentUser=username;
 
@@ -154,10 +136,7 @@ async function handleLogin(event){
 
     console.error(error);
 
-    error =
-      document.getElementById("loginError");
-
-    error.textContent =
+    errorElement.textContent =
       "Kunde inte ansluta till kalkylarket. Kontrollera Apps Script.";
 
   }
@@ -243,25 +222,6 @@ async function getSigns(){
 
   const result =
     await response.json();
-
-  /*
-    Förväntat svar:
-
-    [
-      {
-        id: "...",
-        word: "...",
-        video: "...",
-        week: "...",
-        year: "...",
-        folder: "..."
-      }
-    ]
-
-    Om Apps Script returnerar ett
-    gammalt arrayformat kommer vi
-    hantera det också.
-  */
 
   if(Array.isArray(result))
     return result;
@@ -429,7 +389,6 @@ function setupFolderSelect(){
   const box =
     document.getElementById("newFolderBox");
 
-  // Börja alltid med dolt fält
   box.style.display = "none";
 
   select.innerHTML = `
@@ -546,44 +505,44 @@ function setupForm(){
       document.getElementById("year")
         .value=row.year || "";
 
-     const folder =
-  document.getElementById("folder");
+      const folder =
+        document.getElementById("folder");
 
-const newFolderBox =
-  document.getElementById("newFolderBox");
+      const newFolderBox =
+        document.getElementById("newFolderBox");
 
-newFolderBox.style.display = "none";
+      newFolderBox.style.display = "none";
 
-const existingOption =
-  [...folder.options]
-    .find(
-      option =>
-        option.value ===
-        String(row.folder || "")
-    );
+      const existingOption =
+        [...folder.options]
+          .find(
+            option =>
+              option.value ===
+              String(row.folder || "")
+          );
 
-if(existingOption){
+      if(existingOption){
 
-  folder.value =
-    String(row.folder || "");
+        folder.value =
+          String(row.folder || "");
 
-}else if(row.folder){
+      }else if(row.folder){
 
-  folder.insertAdjacentHTML(
-    "afterbegin",
-    `
-    <option
-      value="${escapeHtml(row.folder)}"
-    >
-      ${escapeHtml(row.folder)}
-    </option>
-    `
-  );
+        folder.insertAdjacentHTML(
+          "afterbegin",
+          `
+          <option
+            value="${escapeHtml(row.folder)}"
+          >
+            ${escapeHtml(row.folder)}
+          </option>
+          `
+        );
 
-  folder.value =
-    String(row.folder);
+        folder.value =
+          String(row.folder);
 
-}
+      }
 
     }
 
